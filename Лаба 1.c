@@ -3,9 +3,9 @@
 #include <stdlib.h> 
 #include <locale.h>
 
-int data; //îòâå÷àåò çà òèï äàííûõ
-int k; //îòâå÷àåò çà òèï îïåðàöèè
-int c;//îïðåäåëÿåò âêëþ÷àòü òåñò èëè íåò
+int data; //отвечает за тип данных
+int k; //отвечает за тип операции
+int c;//определяет включать тест или нет
 
 struct matrix{
 	int n, size;
@@ -14,7 +14,7 @@ struct matrix{
 struct complex{
 	int x, y;
 };
-struct matrix* fill(int* n){ // çàïîëíåíèå ìàññèâîâ
+struct matrix* fill(int* n){ // заполнение массивов
 	int i, j;
 	void* matrix = malloc(*n**n*first.size);
 	for (i = 0; i < *n; i++)
@@ -46,17 +46,17 @@ struct matrix* fill(int* n){ // çàïîëíåíèå ìàññèâîâ
 		}
 	return matrix;
 } 
-void sumInt(void* a, void* b, int i, int j){ // ñóììà öåëûõ
+void sumInt(void* a, void* b, int i, int j){ // сумма целых
 	*((int*)result.z + i*first.n + j) = *((int*)a) + *((int*)b);
 }
-void sumFloat(void* a, void* b, int i, int j){ // ñóììà âåùåñòâåííûõ
+void sumFloat(void* a, void* b, int i, int j){ // сумма вещественных
 	*((float*)result.z + i*first.n + j) = *((float*)a) + *((float*)b);
 }
-void sumComplex(void* a, void* b, int i, int j){ // ñóììà êîìïëåêñíûõ
+void sumComplex(void* a, void* b, int i, int j){ // сумма комплексных
 		((struct complex*)result.z + i*first.n + j)->x = ((struct complex*)a)->x + ((struct complex*)b)->x;
 		((struct complex*)result.z + i*first.n + j)->y = ((struct complex*)a)->y + ((struct complex*)b)->y;
 }
-void Sum(void* a, void* b, void (*func)(void* a, void* b)){ // óíèâåðñàëüíàÿ ôóíêöèÿ ñóììû 
+void Sum(void* a, void* b, void (*func)(void* a, void* b)){ // универсальная функция суммы 
 	int i, j;
 	result.z = calloc(first.n*first.n, first.size);
 	for (i = 0; i < first.n; i++){
@@ -65,7 +65,7 @@ void Sum(void* a, void* b, void (*func)(void* a, void* b)){ // óíèâåðñà�
 		}
 	}
 }
-void multiInt(void* a, void* b, int i, int j){ // óìíîæåíèå
+void multiInt(void* a, void* b, int i, int j){ // умножение
 	*((int*)result.z + i*first.n + j) += *((int*)a) * *((int*)b);
 }
 void multiFloat(void* a, void* b, int i, int j){
@@ -86,7 +86,7 @@ void Multi(void* a, void* b, void(*func)(void* a, void* b)){
 		}
 	}
 }
-void output(void* a) { // âûâîä ìàññèâà
+void output(void* a) { // вывод массива
 	int i, j;
 	for (i = 0; i < first.n; i++){
 		for (j = 0; j < first.n; j++){
@@ -114,8 +114,8 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (*((int*)result.z + first.n*i + j) != 2)
-						printf("Îøèáêà ñëîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка сложения\n");
+					else printf("Все верно\n");
 				}
 		}
 		else if (data == 2){
@@ -128,8 +128,8 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (*((float*)result.z + first.n*i + j) != 2 * first.n + i + j)
-						printf("Îøèáêà ñëîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка сложения\n");
+					else printf("Все верно\n");
 				}
 		}
 		else if (data == 3){
@@ -142,11 +142,11 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (((struct complex*)result.z + first.n*i + j)->x != 2 * first.n + i + j & ((struct complex*)result.z + first.n*i + j)->y != 2 * first.n + i + j)
-						printf("Îøèáêà ñëîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка сложения\n");
+					else printf("Все верно\n");
 				}
 		}
-		// Âûøå òåñò äëÿ ñëîæåíèÿ, íèæå - óìíîæåíèÿ
+		// Выше тест для сложения, ниже - умножения
 	}
 	else if (k == 2){
 		if (data == 1){
@@ -162,8 +162,8 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (*((int*)result.z + first.n*i + j) != 18)
-						printf("Îøèáêà óìíîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка умножения\n");
+					else printf("Все верно\n");
 				}
 		}
 		else if (data == 2){
@@ -176,8 +176,8 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (*((float*)result.z + first.n*i + j) != 36)
-						printf("Îøèáêà óìíîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка умножения\n");
+					else printf("Все верно\n");
 				}
 		}
 		else if (data == 3){
@@ -190,8 +190,8 @@ void test(int data){
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					if (((struct complex*)result.z + first.n*i + j)->x != 0 && ((struct complex*)result.z + first.n*i + j)->y != 16)
-						printf("Îøèáêà óìíîæåíèÿ\n");
-					else printf("Âñå âåðíî\n");
+						printf("Ошибка умножения\n");
+					else printf("Все верно\n");
 				}
 		}
 
@@ -200,22 +200,22 @@ void test(int data){
 
 int main() {
 	setlocale(LC_ALL, "Rus");
-	printf("Ââåäèòå 1 äëÿ öåëûõ, 2 äëÿ âåùåñòâåííûõ, 3 äëÿ êîìïëåêñíûõ\n");
+	printf("Введите 1 для целых, 2 для вещественных, 3 для комплексных\n");
 	scanf("%d", &data);
 	if (data == 1) first.size = sizeof(int);
 	else if (data == 2) first.size = sizeof(float);
 	else if (data == 3) first.size = sizeof(struct complex);
-	printf("Ââåäèòå 1 äëÿ ñëîæåíèÿ, 2 äëÿ óìíîæåíèÿ\n");
+	printf("Введите 1 для сложения, 2 для умножения\n");
 	scanf("%d", &k);
-	printf("Çàïóñòèòü òåñò (1-Äà èëè 2-Íåò)?\n");
+	printf("Запустить тест (1-Да или 2-Нет)?\n");
 	scanf("%d", &c);
 	if (c == 1){
 		test(data);
 	}
 	else if (c == 2){
-		printf("Ââåäèòå êîë-âî ñòðîê è ñòîëáöîâ ïåðâîé ìàòðèöû\n");
+		printf("Введите кол-во строк и столбцов первой матрицы\n");
 		scanf("%d", &first.n);
-		printf("Ââåäèòå êîë-âî ñòðîê è ñòîëáöîâ âòîðîé ìàòðèöû\n");
+		printf("Введите кол-во строк и столбцов второй матрицы\n");
 		scanf("%d", &second.n);
 		first.z = fill(&first.n);
 		second.z = fill(&second.n);
@@ -226,7 +226,7 @@ int main() {
 				else if (data == 3) Sum(first.z, second.z, sumComplex);
 				output(result.z);
 			}
-			else printf("Ìàòðèöû íåâîçìîæíî ñëîæèòü\n");
+			else printf("Матрицы невозможно сложить\n");
 		}
 		else if (k == 2){
 			if (first.n == second.n){
@@ -235,7 +235,7 @@ int main() {
 				else if (data == 3) Multi(first.z, second.z, multiComplex);
 				output(result.z);
 			}
-			else printf("Ìàòðèöû íåâîçìîæíî óìíîæèòü\n");
+			else printf("Матрицы невозможно умножить\n");
 		}	
 	}
 	free(first.z);
