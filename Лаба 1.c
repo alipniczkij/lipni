@@ -99,12 +99,13 @@ void output(void* a) { // вывод массива
 }
 void test(int data){
 	int i, j;
+
 	first.n = 2;
 	second.n = 2;
 	first.z = malloc(2 * 2 * first.size);
 	second.z = malloc(2 * 2 * first.size);
-	if (k == 1){
 		if (data == 1){
+			printf("Сложение:\n");
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					*((int*)first.z + first.n*i + j) = 1;
@@ -117,39 +118,7 @@ void test(int data){
 						printf("Ошибка сложения\n");
 					else printf("Все верно\n");
 				}
-		}
-		else if (data == 2){
-			for (i = 0; i < first.n; i++)
-				for (j = 0; j < first.n; j++){
-					*((float*)first.z + first.n*i + j) = first.n + i;
-					*((float*)second.z + first.n*i + j) = first.n + j;
-				}
-			Sum(first.z, second.z, sumFloat);
-			for (i = 0; i < first.n; i++)
-				for (j = 0; j < first.n; j++){
-					if (*((float*)result.z + first.n*i + j) != 2 * first.n + i + j)
-						printf("Ошибка сложения\n");
-					else printf("Все верно\n");
-				}
-		}
-		else if (data == 3){
-			for (i = 0; i < first.n; i++)
-				for (j = 0; j < first.n; j++){
-					((struct complex*)first.z + first.n*i + j)->x = ((struct complex*)first.z + first.n*i + j)->y = first.n + i;
-					((struct complex*)second.z + first.n*i + j)->x = ((struct complex*)second.z + first.n*i + j)->y = first.n + j;
-				}
-			Sum(first.z, second.z, sumComplex);
-			for (i = 0; i < first.n; i++)
-				for (j = 0; j < first.n; j++){
-					if (((struct complex*)result.z + first.n*i + j)->x != 2 * first.n + i + j & ((struct complex*)result.z + first.n*i + j)->y != 2 * first.n + i + j)
-						printf("Ошибка сложения\n");
-					else printf("Все верно\n");
-				}
-		}
-		// Выше тест для сложения, ниже - умножения
-	}
-	else if (k == 2){
-		if (data == 1){
+			printf("Умножение:\n");
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					*((int*)first.z + first.n*i + j) = 3;
@@ -167,6 +136,20 @@ void test(int data){
 				}
 		}
 		else if (data == 2){
+			printf("Сложение:\n");
+			for (i = 0; i < first.n; i++)
+				for (j = 0; j < first.n; j++){
+					*((float*)first.z + first.n*i + j) = first.n + i;
+					*((float*)second.z + first.n*i + j) = first.n + j;
+				}
+			Sum(first.z, second.z, sumFloat);
+			for (i = 0; i < first.n; i++)
+				for (j = 0; j < first.n; j++){
+					if (*((float*)result.z + first.n*i + j) != 2 * first.n + i + j)
+						printf("Ошибка сложения\n");
+					else printf("Все верно\n");
+				}
+			printf("Умножение:\n");
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					*((float*)first.z + first.n*i + j) = 6;
@@ -181,6 +164,20 @@ void test(int data){
 				}
 		}
 		else if (data == 3){
+			printf("Сложение:\n");
+			for (i = 0; i < first.n; i++)
+				for (j = 0; j < first.n; j++){
+					((struct complex*)first.z + first.n*i + j)->x = ((struct complex*)first.z + first.n*i + j)->y = first.n + i;
+					((struct complex*)second.z + first.n*i + j)->x = ((struct complex*)second.z + first.n*i + j)->y = first.n + j;
+				}
+			Sum(first.z, second.z, sumComplex);
+			for (i = 0; i < first.n; i++)
+				for (j = 0; j < first.n; j++){
+					if (((struct complex*)result.z + first.n*i + j)->x != 2 * first.n + i + j & ((struct complex*)result.z + first.n*i + j)->y != 2 * first.n + i + j)
+						printf("Ошибка сложения\n");
+					else printf("Все верно\n");
+				}
+			printf("Умножение:\n");
 			for (i = 0; i < first.n; i++)
 				for (j = 0; j < first.n; j++){
 					((struct complex*)first.z + first.n*i + j)->x = ((struct complex*)first.z + first.n*i + j)->y = 2;
@@ -194,8 +191,6 @@ void test(int data){
 					else printf("Все верно\n");
 				}
 		}
-
-	}
 }
 
 int main() {
@@ -205,14 +200,14 @@ int main() {
 	if (data == 1) first.size = sizeof(int);
 	else if (data == 2) first.size = sizeof(float);
 	else if (data == 3) first.size = sizeof(struct complex);
-	printf("Введите 1 для сложения, 2 для умножения\n");
-	scanf("%d", &k);
 	printf("Запустить тест (1-Да или 2-Нет)?\n");
 	scanf("%d", &c);
 	if (c == 1){
 		test(data);
 	}
 	else if (c == 2){
+		printf("Введите 1 для сложения, 2 для умножения\n");
+		scanf("%d", &k);
 		printf("Введите кол-во строк и столбцов первой матрицы\n");
 		scanf("%d", &first.n);
 		printf("Введите кол-во строк и столбцов второй матрицы\n");
